@@ -1,0 +1,890 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Secret Love Museum | Roshni</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+:root {
+  --black: #090609;
+  --burgundy: #5b1028;
+  --rose: #e7a6b8;
+  --gold: #d9b76e;
+  --cream: #fff0e7;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Poppins', sans-serif;
+  overflow-x: hidden;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.gold {
+  color: var(--gold);
+}
+
+.rose {
+  color: var(--rose);
+}
+
+h1, h2, h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: clamp(2.8rem, 8vw, 6rem);
+}
+
+h2 {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+}
+
+p {
+  line-height: 1.9;
+}
+
+button.primary {
+  background: linear-gradient(135deg, #d9b76e, #f4dca0);
+  color: #180b10;
+  padding: 14px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  margin: 10px;
+  transition: .3s;
+}
+
+button.primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #d9b76e55;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 12px 24px;
+  border-radius: 40px;
+  margin: 8px;
+}
+
+.screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.background-glow {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, #5b102833, transparent 40%),
+    radial-gradient(circle at 80% 80%, #9c294333, transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.subtitle {
+  color: #cbaeb5;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-size: 11px;
+  margin: 20px 0;
+}
+
+.card {
+  background: linear-gradient(145deg, #24131b, #100a0e);
+  border: 1px solid #d9b76e33;
+  border-radius: 25px;
+  padding: 30px;
+  width: min(650px, 95%);
+  margin: 20px auto;
+  box-shadow: 0 15px 45px #0008;
+}
+
+input {
+  padding: 15px;
+  border-radius: 30px;
+  border: 1px solid var(--gold);
+  background: #140b10;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  margin: 20px;
+  width: min(260px, 85%);
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #090609ee;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #d9b76e22;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.topbar span {
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 23px;
+}
+
+.topbar button {
+  background: transparent;
+  color: var(--rose);
+  font-size: 20px;
+  padding: 5px 12px;
+}
+
+.chapter {
+  display: none;
+  min-height: 90vh;
+  padding: 60px 18px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+.chapter.active {
+  display: block;
+}
+
+.chapter-number {
+  color: var(--gold);
+  letter-spacing: 4px;
+  font-size: 12px;
+  margin-bottom: 15px;
+}
+
+.chapter-text {
+  max-width: 700px;
+  margin: 25px auto;
+  color: #e6cfd5;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  max-width: 750px;
+  margin: 30px auto;
+}
+
+.gallery img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 1px solid #d9b76e55;
+  transition: .4s;
+}
+
+.gallery img:hover {
+  transform: scale(1.03);
+}
+
+.promise {
+  background: #24131b;
+  border: 1px solid #d9b76e33;
+  border-radius: 15px;
+  padding: 18px;
+  margin: 12px auto;
+  max-width: 600px;
+  color: #f3d9e1;
+}
+
+.heart {
+  font-size: 40px;
+  display: inline-block;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.heart:hover {
+  transform: scale(1.3);
+}
+
+.game-area {
+  position: relative;
+  height: 250px;
+  width: min(600px, 95%);
+  border: 1px solid #d9b76e55;
+  border-radius: 20px;
+  margin: 20px auto;
+  overflow: hidden;
+  background: #180d13;
+}
+
+.game-heart {
+  position: absolute;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.cake {
+  font-size: clamp(100px, 25vw, 180px);
+  cursor: pointer;
+  margin: 25px;
+  animation: cakeGlow 2s infinite alternate;
+  display: inline-block;
+  transition: .4s;
+}
+
+.cake:hover {
+  transform: scale(1.08);
+}
+
+#cakeMessage {
+  color: var(--rose);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  margin: 20px;
+}
+
+.firework {
+  position: fixed;
+  font-size: 25px;
+  pointer-events: none;
+  animation: explode 2s forwards;
+  z-index: 99;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 40px 0;
+}
+
+.footer {
+  color: #9c7c88;
+  margin-top: 50px;
+  font-size: 12px;
+}
+
+.rose-decoration {
+  font-size: 25px;
+  margin: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cakeGlow {
+  from { filter: drop-shadow(0 0 5px #e7a6b8); }
+  to { filter: drop-shadow(0 0 30px #d9b76e); }
+}
+
+@keyframes explode {
+  0% { opacity: 1; transform: scale(.3); }
+  100% { opacity: 0; transform: translateY(-250px) scale(2.5); }
+}
+
+@media(max-width: 600px) {
+  .gallery img {
+    height: 200px;
+  }
+  .card {
+    padding: 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="background-glow"></div>
+
+<!-- ACCESS SCREEN -->
+<section id="lockScreen" class="screen">
+  <div class="rose-decoration">🌹 ✨ 🌹</div>
+  <div class="subtitle">A secret world made just for you</div>
+  <h1 class="gold">Roshni</h1>
+  <h2 class="rose">The Secret Love Museum</h2>
+
+  <div class="card">
+    <p>
+      Some stories are too beautiful to be told to everyone.
+      This little universe is only for you.
+    </p>
+    <p class="gold" style="margin-top:20px">
+      Enter your secret code
+    </p>
+
+    <input id="passcode" type="password" placeholder="Your secret code">
+
+    <br>
+    <button class="primary" onclick="unlock()">Open My Universe ✨</button>
+
+    <p id="lockMessage" class="rose"></p>
+  </div>
+
+  <div class="footer">A little surprise • November 14</div>
+</section>
+
+<!-- MAIN WEBSITE -->
+<div id="mainSite" class="hidden">
+
+  <header class="topbar">
+    <span>🌹 Roshni's Universe</span>
+    <button onclick="toggleMusic()" title="Music">♫</button>
+  </header>
+
+  <!-- CHAPTER 1 -->
+  <section class="chapter active" id="chapter1">
+    <div class="chapter-number">CHAPTER 01 · THE BEGINNING</div>
+    <div class="rose-decoration">🌹</div>
+    <h1 class="gold">The Roshni Experience</h1>
+    <h2 class="rose">A universe made for one girl</h2>
+    <p class="chapter-text">
+      Welcome to a little world where every rose has a story,
+      every star carries a wish, and every page has a piece
+      of my heart waiting for you.
+    </p>
+    <button class="primary" onclick="nextChapter()">Begin the journey ✨</button>
+  </section>
+
+  <!-- CHAPTER 2 -->
+  <section class="chapter" id="chapter2">
+    <div class="chapter-number">CHAPTER 02 · OUR LITTLE UNIVERSE</div>
+    <h2 class="rose">If our love were a universe...</h2>
+    <div class="card">
+      <p>
+        You would be my brightest star.
+        <br><br>
+        Even on the darkest nights, the thought of you
+        would make everything feel beautiful.
+        <br><br>
+        And if I could choose one place in all the galaxies,
+        I would choose the place where you are.
+      </p>
+    </div>
+    <div class="rose-decoration">🌙 ✨ 💗 ✨ 🌙</div>
+    <button class="primary" onclick="nextChapter()">Continue</button>
+  </section>
+
+  <!-- CHAPTER 3 -->
+  <section class="chapter" id="chapter3">
+    <div class="chapter-number">CHAPTER 03 · MEMORY GALLERY</div>
+    <h2 class="gold">Little moments, big feelings</h2>
+    <p class="chapter-text">
+      Every picture is a tiny memory.
+      Every memory is a reason to smile.
+    </p>
+
+    <div class="gallery">
+      <img src="photo1.jpg" alt="Our memory one">
+      <img src="photo2.jpg" alt="Our memory two">
+      <img src="photo3.jpg" alt="Our memory three">
+      <img src="photo4.jpg" alt="Our memory four">
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Next memory 💗</button>
+  </section>
+
+  <!-- CHAPTER 4 -->
+  <section class="chapter" id="chapter4">
+    <div class="chapter-number">CHAPTER 04 · A LETTER</div>
+    <h2 class="rose">Dear Roshni...</h2>
+
+    <div class="card">
+      <p>
+        If I could give you one thing in this world,
+        I would give you the ability to see yourself through my eyes.
+        <br><br>
+        Then you would understand how special you are,
+        how much happiness your smile brings,
+        and how beautiful the smallest moments become
+        when they are shared with you.
+        <br><br>
+        I don't need a perfect story.
+        I just want something honest, peaceful,
+        and filled with little moments that belong to us.
+        <br><br>
+        You are not just a part of my world.
+        You make my world feel brighter.
+        <br><br>
+        Happy Birthday, my Roshni. ❤️
+      </p>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Keep reading 💌</button>
+  </section>
+
+  <!-- CHAPTER 5 -->
+  <section class="chapter" id="chapter5">
+    <div class="chapter-number">CHAPTER 05 · 14 PROMISES</div>
+    <h2 class="gold">Fourteen little promises</h2>
+    <p class="chapter-text">For your 14th November birthday, 14 promises from my heart.</p>
+
+    <div id="promisesContainer"></div>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 6 -->
+  <section class="chapter" id="chapter6">
+    <div class="chapter-number">CHAPTER 06 · THE HEART GAME</div>
+    <h2 class="rose">Catch the little hearts 💗</h2>
+    <p class="chapter-text">Catch as many hearts as you can!</p>
+
+    <div class="card">
+      <h3 class="gold">Score: <span id="score">0</span></h3>
+      <div class="game-area" id="gameArea"></div>
+      <button class="primary" onclick="startGame()">Start the game</button>
+    </div>
+
+    <p id="gameMessage" class="rose"></p>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 7 -->
+  <section class="chapter" id="chapter7">
+    <div class="chapter-number">CHAPTER 07 · THE ROSE ROOM</div>
+    <h2 class="gold">A thousand roses for you</h2>
+    <div class="rose-decoration" style="font-size:55px">
+      🌹 🌹 🌹 🌹 🌹
+    </div>
+
+    <div class="card">
+      <p>
+        If every thought of you became a rose,
+        I would have a garden that never ends.
+        <br><br>
+        If every smile of yours became a star,
+        the night sky would never be dark.
+      </p>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Continue</button>
+  </section>
+
+  <!-- CHAPTER 8 -->
+  <section class="chapter" id="chapter8">
+    <div class="chapter-number">CHAPTER 08 · OUR SONGS</div>
+    <h2 class="rose">Music that feels like you</h2>
+
+    <div class="card">
+      <p>
+        Some songs remind me of you.
+        Some lyrics feel like our little story.
+        And some melodies make me wish
+        the moment would never end.
+      </p>
+      <div class="rose-decoration">🎧 🎶 💗 🎶 🎧</div>
+      <p class="gold">Our song-loving little world</p>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 9 -->
+  <section class="chapter" id="chapter9">
+    <div class="chapter-number">CHAPTER 09 · THE WISH ROOM</div>
+    <h2 class="gold">My wishes for you</h2>
+
+    <div class="card">
+      <p>
+        I wish you endless happiness.
+        <br><br>
+        I wish you peaceful nights and beautiful mornings.
+        <br><br>
+        I wish that every dream you carry
+        finds its way into your life.
+        <br><br>
+        I wish you confidence when you feel uncertain,
+        strength when things are difficult,
+        and people who always treat your heart gently.
+        <br><br>
+        Most of all, I wish you a life
+        filled with reasons to smile.
+      </p>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 10 -->
+  <section class="chapter" id="chapter10">
+    <div class="chapter-number">CHAPTER 10 · THE SECRET VAULT</div>
+    <h2 class="rose">A secret from my heart</h2>
+
+    <div class="card">
+      <p id="secretText">
+        Tap the button to open your secret message.
+      </p>
+      <button class="primary" onclick="revealSecret()">Reveal my secret 💌</button>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 11 -->
+  <section class="chapter" id="chapter11">
+    <div class="chapter-number">CHAPTER 11 · THE DREAM ROOM</div>
+    <h2 class="gold">A thousand beautiful tomorrows</h2>
+
+    <div class="card">
+      <p>
+        I imagine little moments:
+        <br><br>
+        Sharing songs.
+        Laughing over silly things.
+        Making memories.
+        Celebrating every small achievement.
+        <br><br>
+        A beautiful future isn't always about grand things.
+        Sometimes it's simply about having
+        someone who makes ordinary days feel special.
+      </p>
+    </div>
+
+    <div class="rose-decoration">🌙 💫 🌹 💫 🌙</div>
+
+    <button class="primary" onclick="nextChapter()">Next chapter</button>
+  </section>
+
+  <!-- CHAPTER 12 -->
+  <section class="chapter" id="chapter12">
+    <div class="chapter-number">CHAPTER 12 · BEFORE THE WISH</div>
+    <h2 class="rose">Close your eyes for a moment...</h2>
+
+    <div class="card">
+      <p>
+        Take a deep breath.
+        <br><br>
+        Imagine the candles glowing.
+        Imagine the soft music.
+        Imagine all the love and wishes
+        surrounding you.
+        <br><br>
+        This moment is yours, Roshni.
+        You deserve every bit of happiness.
+      </p>
+    </div>
+
+    <button class="primary" onclick="nextChapter()">Go to your birthday cake 🎂</button>
+  </section>
+
+  <!-- CHAPTER 13 -->
+  <section class="chapter" id="chapter13">
+    <div class="chapter-number">CHAPTER 13 · YOUR BIRTHDAY</div>
+    <h2 class="gold">Happy Birthday, Roshni!</h2>
+    <p class="chapter-text">
+      Make a wish, beautiful girl.
+      <br>
+      Your special moment is waiting.
+    </p>
+
+    <div class="rose-decoration">🎈 🌹 🎈</div>
+
+    <div class="cake" onclick="playBirthdaySong()" id="birthdayCake">
+      🎂
+    </div>
+
+    <div id="cakeMessage">
+      Tap your cake to hear your birthday song 🎶
+    </div>
+
+    <audio id="birthdaySong" preload="auto">
+      <source src="roshni-birthday.mp3" type="audio/mpeg">
+    </audio>
+
+    <button class="secondary" onclick="playBirthdaySong()">Play birthday song again 🎵</button>
+
+    <div class="rose-decoration">💗 🎂 💗</div>
+
+    <button class="primary" onclick="nextChapter()">One final surprise ✨</button>
+  </section>
+
+  <!-- CHAPTER 14 -->
+  <section class="chapter" id="chapter14">
+    <div class="chapter-number">CHAPTER 14 · THE GRAND FINALE</div>
+
+    <h1 class="gold">You are my brightest light</h1>
+    <h2 class="rose">Happy Birthday, Roshni ❤️</h2>
+
+    <div class="card">
+      <p>
+        This little universe may end here,
+        but the wishes inside it are endless.
+        <br><br>
+        May your life be filled with love,
+        laughter, beautiful memories,
+        and dreams that come true.
+        <br><br>
+        Thank you for being the wonderful person you are.
+        <br><br>
+        <span class="gold">With love, always.</span>
+      </p>
+    </div>
+
+    <div class="rose-decoration" style="font-size:45px">
+      🌹 💗 ✨ 💗 🌹
+    </div>
+
+    <button class="primary" onclick="fireworks()">Celebrate! 🎆</button>
+    <button class="secondary" onclick="goToChapter(1)">Relive the journey</button>
+
+    <div class="footer">Made with love • A little world for Roshni</div>
+  </section>
+
+  <!-- NAVIGATION -->
+  <div class="navigation">
+    <button class="secondary" onclick="previousChapter()">← Previous</button>
+    <button class="secondary" onclick="nextChapter()">Next →</button>
+  </div>
+
+</div>
+
+<script>
+/* =====================================
+   ACCESS CODE
+   ===================================== */
+
+const SECRET_CODE = "1410";
+
+function unlock() {
+  const code = document.getElementById("passcode").value;
+
+  if (code === SECRET_CODE) {
+    document.getElementById("lockScreen").classList.add("hidden");
+    document.getElementById("mainSite").classList.remove("hidden");
+    goToChapter(1);
+  } else {
+    document.getElementById("lockMessage").innerText =
+      "That isn't the secret code. Try again 💗";
+  }
+}
+
+document.getElementById("passcode").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") unlock();
+});
+
+/* =====================================
+   CHAPTER NAVIGATION
+   ===================================== */
+
+let currentChapter = 1;
+const totalChapters = 14;
+
+function goToChapter(number) {
+  currentChapter = Math.max(1, Math.min(totalChapters, number));
+
+  document.querySelectorAll(".chapter").forEach(chapter => {
+    chapter.classList.remove("active");
+  });
+
+  document.getElementById("chapter" + currentChapter).classList.add("active");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function nextChapter() {
+  if (currentChapter < totalChapters) {
+    goToChapter(currentChapter + 1);
+  }
+}
+
+function previousChapter() {
+  if (currentChapter > 1) {
+    goToChapter(currentChapter - 1);
+  }
+}
+
+/* =====================================
+   14 PROMISES
+   ===================================== */
+
+const promises = [
+  "I promise to respect your feelings.",
+  "I promise to listen when you need to talk.",
+  "I promise to celebrate your happiness.",
+  "I promise to encourage your dreams.",
+  "I promise to be honest with you.",
+  "I promise to appreciate the little things.",
+  "I promise to respect your personal space.",
+  "I promise to make time for meaningful moments.",
+  "I promise to support you when days are difficult.",
+  "I promise to never make you feel small.",
+  "I promise to laugh with you.",
+  "I promise to cherish our memories.",
+  "I promise to keep learning how to care better.",
+  "I promise to always wish the best for you."
+];
+
+const promisesContainer = document.getElementById("promisesContainer");
+
+promises.forEach((promise, index) => {
+  const div = document.createElement("div");
+  div.className = "promise";
+  div.innerHTML = `<span class="gold">${index + 1}.</span> ${promise}`;
+  promisesContainer.appendChild(div);
+});
+
+/* =====================================
+   HEART MINI GAME
+   ===================================== */
+
+let score = 0;
+let gameInterval = null;
+
+function startGame() {
+  score = 0;
+  document.getElementById("score").innerText = score;
+  document.getElementById("gameMessage").innerText = "";
+
+  const area = document.getElementById("gameArea");
+  area.innerHTML = "";
+
+  if (gameInterval) clearInterval(gameInterval);
+
+  gameInterval = setInterval(() => {
+    const heart = document.createElement("span");
+    heart.className = "game-heart";
+    heart.innerHTML = "💗";
+
+    heart.style.left = Math.random() * 85 + "%";
+    heart.style.top = Math.random() * 75 + "%";
+
+    heart.onclick = function() {
+      score++;
+      document.getElementById("score").innerText = score;
+      heart.remove();
+
+      if (score >= 10) {
+        document.getElementById("gameMessage").innerText =
+          "You caught 10 hearts! You deserve a million more 💖";
+      }
+    };
+
+    area.appendChild(heart);
+
+    setTimeout(() => {
+      if (heart.parentElement) heart.remove();
+    }, 1800);
+
+  }, 700);
+
+  setTimeout(() => {
+    clearInterval(gameInterval);
+    gameInterval = null;
+
+    document.getElementById("gameMessage").innerText =
+      "Game over! Your score: " + score + " hearts 💗";
+  }, 15000);
+}
+
+/* =====================================
+   SECRET VAULT
+   ===================================== */
+
+function revealSecret() {
+  document.getElementById("secretText").innerHTML =
+    "The little secret is... <br><br>" +
+    "No matter how many beautiful things exist in this world, " +
+    "your happiness will always be one of the things " +
+    "I wish for the most. <br><br>" +
+    "You are special, Roshni. Never forget that. 💗";
+}
+
+/* =====================================
+   REAL MP3 BIRTHDAY SONG
+   ===================================== */
+
+const birthdaySong = document.getElementById("birthdaySong");
+
+function playBirthdaySong() {
+  birthdaySong.currentTime = 0;
+
+  birthdaySong.play().then(() => {
+    document.getElementById("cakeMessage").innerHTML =
+      "Happy Birthday, Roshni! 🎶💗";
+
+    document.getElementById("birthdayCake").innerHTML = "🎂💖";
+
+    fireworks();
+  }).catch(error => {
+    document.getElementById("cakeMessage").innerHTML =
+      "Please check that roshni-birthday.mp3 is uploaded beside index.html 🎵";
+
+    console.error("Birthday song playback failed:", error);
+  });
+}
+
+/* =====================================
+   OPTIONAL BACKGROUND MUSIC BUTTON
+   ===================================== */
+
+function toggleMusic() {
+  if (!birthdaySong.paused) {
+    birthdaySong.pause();
+  } else {
+    playBirthdaySong();
+  }
+}
+
+/* =====================================
+   FIREWORKS
+   ===================================== */
+
+function fireworks() {
+  const symbols = ["✨", "💖", "🎆", "🌟", "💗", "🎉"];
+
+  for (let i = 0; i < 45; i++) {
+    const firework = document.createElement("div");
+    firework.className = "firework";
+
+    firework.innerText =
+      symbols[Math.floor(Math.random() * symbols.length)];
+
+    firework.style.left = Math.random() * 100 + "vw";
+    firework.style.top = (40 + Math.random() * 50) + "vh";
+
+    document.body.appendChild(firework);
+
+    setTimeout(() => {
+      firework.remove();
+    }, 2000);
+  }
+}
+</script>
+
+</body>
+</html>
